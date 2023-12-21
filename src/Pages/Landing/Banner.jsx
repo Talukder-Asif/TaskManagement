@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import Btn from "../../Component/Btn";
 import bannerImg from "/src/assets/hero.png";
+import { AuthContext } from "../../Authantication/AuthProvider/AuthProvider";
 const Banner = () => {
+  const{user} = useContext(AuthContext)
   return (
     <div className="bg-[#f9f9f9]">
       <div className="hero md:min-h-[500px] relative">
@@ -16,7 +19,7 @@ const Banner = () => {
             Organize and manage your team like a boss with Bitrix24, a free task management tool packing more capabilities than you can imagine.
             </p>
             <div className=" flex gap-5">
-              <a target="blank" download>
+              <a href={user?"/users":"/signin"} >
                 <Btn btnName={"Let’s Explore"}></Btn>
               </a>
             </div>

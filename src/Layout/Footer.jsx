@@ -9,10 +9,8 @@ const Footer = () => {
     <footer className="bg-[#eef1f6] rounded-lg shadow dark:bg-gray-900 ">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="space-y-2 text-center">
-          <a className=" max-w-56 " href="/">
-            <img src={logo} className="m-auto " alt="" />
-          </a>
-          <p className=" font1 m-auto text-center text-[#666] font-medium md:max-w-[50%]">
+            <img src={logo} className="max-w-56 m-auto" alt="" />
+          <p className=" font1 m-auto text-center text-[#666] font-medium md:max-w-[70%]">
             Embark on a journey through lines of code and pixels, where
             creativity meets functionality.Connect with me to turn ideas into
             captivating realities. Let&apos;s build something extraordinary

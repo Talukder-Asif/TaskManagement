@@ -1,9 +1,43 @@
+import { useContext } from "react";
 import logo from "/src/assets/logo.png"
+import { AuthContext } from "../Authantication/AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 const NavBar = () => {
+  const {user, logOut}= useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handelLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#eb0029",
+      cancelButtonColor: "#1b1d4d",
+      confirmButtonText: "Yes, Log Out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut()
+        .then(() => {
+        })
+        // eslint-disable-next-line no-unused-vars
+        .catch((error) => {
+          // An error happened.
+        });
+        navigate("/");
+        // window.location.reload();
+      }
+    });
+      
+  };
     const manuItem = (
         <>
-          <li><a className="hover:bg-transparent hover:underline decoration-[#801f82]" href={"#about"}>Dashboard</a></li>
+          <li><a className="hover:bg-transparent hover:underline decoration-[#801f82]" href={"/users"}>Dashboard</a></li>
           <li><a className="hover:bg-transparent hover:underline decoration-[#801f82]" href={"#Project"}>About us</a></li>
+          {
+            user?<li><button onClick={handelLogOut} className="hover:bg-transparent hover:underline decoration-[#801f82]" href={"#Project"}>Log Out</button></li>:null
+          }
         </>
       );
       return (
