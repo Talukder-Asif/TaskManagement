@@ -12,6 +12,8 @@ import Dashboard from "./Pages/UserPages/DashBoard/Dashboard";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PrivateRoute from "./Routes/PrivateRoute";
 import AddTask from "./Pages/UserPages/AddTask/AddTask";
+import MyTask from "./Pages/UserPages/MyTask/MyTask";
+import UpdateTask from "./Pages/UserPages/UpdateTask/UpdateTask";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -40,12 +42,20 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "/users",
+            path: "/users/profile",
             element: <Dashboard></Dashboard>,
           },
           {
             path:"/users/addTask",
             element:<AddTask></AddTask>
+          },
+          {
+            path:"/users/Task",
+            element:<MyTask></MyTask>
+          },
+          {
+            path:"/users/update/:id",
+            element:<UpdateTask></UpdateTask>
           }
         ],
       },

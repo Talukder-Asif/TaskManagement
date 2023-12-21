@@ -9,7 +9,7 @@ const DashboardLayout = () => {
                 <li className="mb-4 ">
                   <NavLink
                     className="bg-[#1b1d4d] text-sm rounded-2xl px-3  py-1 text-white border-2 lg:text-base border-[#1b1d4d]hover:text-white lg:hover:text-[#1b1d4d]"
-                    to={"/users"}
+                    to={"/users/profile"}
                   >
                     Profile
                   </NavLink>
@@ -17,7 +17,7 @@ const DashboardLayout = () => {
                 <li className="mb-4 ">
                   <NavLink
                     className="bg-[#1b1d4d] text-sm rounded-2xl px-3  py-1 text-white border-2 lg:text-base border-[#1b1d4d]hover:text-white lg:hover:text-[#1b1d4d]"
-                    
+                    to={"/users/Task"}
                   >
                      My Task
                   </NavLink>

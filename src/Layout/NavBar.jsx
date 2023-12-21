@@ -13,7 +13,7 @@ const NavBar = () => {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#eb0029",
+      confirmButtonColor: "#801f82",
       cancelButtonColor: "#1b1d4d",
       confirmButtonText: "Yes, Log Out!",
     }).then((result) => {
