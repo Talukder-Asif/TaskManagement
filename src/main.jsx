@@ -14,6 +14,7 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import AddTask from "./Pages/UserPages/AddTask/AddTask";
 import MyTask from "./Pages/UserPages/MyTask/MyTask";
 import UpdateTask from "./Pages/UserPages/UpdateTask/UpdateTask";
+import PreviousTask from "./Pages/UserPages/PreviousTask/PreviousTask";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "/users/profile",
+            path: "/users",
             element: <Dashboard></Dashboard>,
           },
           {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
           {
             path:"/users/update/:id",
             element:<UpdateTask></UpdateTask>
+          },
+          {
+            path:"/users/previous",
+            element:<PreviousTask></PreviousTask>
           }
         ],
       },

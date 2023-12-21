@@ -6,14 +6,7 @@ const DashboardLayout = () => {
           <div className="max-w-7xl m-auto relative lg:flex flex-nowrap flex-col md:flex-row my-3 lg:my-10 min-h-screen">
             <div className="lg:w-[20%]">
               <ul className="menu-horizontal gap-1 flex-wrap justify-center lg:menu">
-                <li className="mb-4 ">
-                  <NavLink
-                    className="bg-[#1b1d4d] text-sm rounded-2xl px-3  py-1 text-white border-2 lg:text-base border-[#1b1d4d]hover:text-white lg:hover:text-[#1b1d4d]"
-                    to={"/users/profile"}
-                  >
-                    Profile
-                  </NavLink>
-                </li>
+                
                 <li className="mb-4 ">
                   <NavLink
                     className="bg-[#1b1d4d] text-sm rounded-2xl px-3  py-1 text-white border-2 lg:text-base border-[#1b1d4d]hover:text-white lg:hover:text-[#1b1d4d]"
@@ -33,7 +26,7 @@ const DashboardLayout = () => {
                 <li className="mb-4 ">
                   <NavLink
                     className="bg-[#1b1d4d] text-sm rounded-2xl px-3  py-1 text-white border-2 lg:text-base border-[#1b1d4d]hover:text-white lg:hover:text-[#1b1d4d]"
-                    
+                    to={'/users/previous'}
                   >
                     Previous tasks
                   </NavLink>

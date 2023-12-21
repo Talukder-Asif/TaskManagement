@@ -7,11 +7,12 @@ import { MdOutlineUpdate } from "react-icons/md";
 
 const MyTask = () => {
   const axiosPublic = useAxios();
+  const Now = Date.now();
+  console.log(Now);
   const [Task, isTaskLoading, refetch] = useTask();
-  const toDoTask=Task?.filter(task => task.list === "To Do");
-  const ongoingTask=Task?.filter(task => task.list === "On going");
-  const CompledeTask=Task?.filter(task => task.list === "Completed");
-
+  const toDoTask=Task?.filter(task => task.list === "To Do" && Now <= Date.parse(task.TaskDeadline));
+  const ongoingTask=Task?.filter(task => task.list === "On going" && Now <= Date.parse(task.TaskDeadline));
+  const CompledeTask=Task?.filter(task => task.list === "Completed" && Now <= Date.parse(task.TaskDeadline));
 
 
   const handelDelete = (Task) => {
