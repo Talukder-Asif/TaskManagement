@@ -9,6 +9,10 @@ import AuthProvider from "./Authantication/AuthProvider/AuthProvider";
 import CreateAccount from "./Pages/Registration/CreateAccount";
 import DashboardLayout from "./Layout/DashboardLayout";
 import Dashboard from "./Pages/UserPages/DashBoard/Dashboard";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import PrivateRoute from "./Routes/PrivateRoute";
+import AddTask from "./Pages/UserPages/AddTask/AddTask";
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -25,26 +29,36 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
-        element:<CreateAccount></CreateAccount>
+        element: <CreateAccount></CreateAccount>,
       },
       {
-        path:"/users",
-        element:<DashboardLayout></DashboardLayout>,
-        children:[
+        path: "/users",
+        element: (
+          <PrivateRoute>
+            <DashboardLayout></DashboardLayout>
+          </PrivateRoute>
+        ),
+        children: [
           {
-            path:"/users",
-            element:<Dashboard></Dashboard>
+            path: "/users",
+            element: <Dashboard></Dashboard>,
+          },
+          {
+            path:"/users/addTask",
+            element:<AddTask></AddTask>
           }
-        ]
-      }
+        ],
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

@@ -38,19 +38,15 @@ const CreateAccount = () => {
       return createUser(email, password)
         .then((result) => {
           const user = result.user;
-        axios.post('https://testhalal-server.vercel.app/jwt', user, {withCredentials:true})
+        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
           update(name, photo);
           const userData = {
             name: name,
             email: email,
-            role: "User",
-            contestAdded:0,
-            win:0,
             photo: photo,
-            Contest:[]
           }
-          axios.post('https://end-game-server-delta.vercel.app/user', userData)
+          axios.post('http://localhost:5000/user', userData)
           .then(res=> console.log(res.data));
           Swal.fire({
             icon: "success",
@@ -74,18 +70,14 @@ const CreateAccount = () => {
         .then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
-        axios.post('https://testhalal-server.vercel.app/jwt', user, {withCredentials:true})
+        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
         const userData = {
           name: user.displayName,
           email: user.email,
-          role: "User",
-          contestAdded:0,
-          win:0,
           photo: user.photoURL,
-          Contest:[]
         }
-        axios.post('https://end-game-server-delta.vercel.app/user', userData)
+        axios.post('http://localhost:5000/user', userData)
         .then(res=> console.log(res.data));
           Swal.fire({
             icon: "success",
