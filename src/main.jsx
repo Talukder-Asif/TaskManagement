@@ -15,6 +15,7 @@ import AddTask from "./Pages/UserPages/AddTask/AddTask";
 import MyTask from "./Pages/UserPages/MyTask/MyTask";
 import UpdateTask from "./Pages/UserPages/UpdateTask/UpdateTask";
 import PreviousTask from "./Pages/UserPages/PreviousTask/PreviousTask";
+
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([

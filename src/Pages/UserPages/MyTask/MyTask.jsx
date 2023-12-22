@@ -68,7 +68,7 @@ const MyTask = () => {
       </div>
     );
   }
-  if (Task?.length <= 0) {
+  if (toDoTask?.length <= 0 && ongoingTask?.length <= 0 && CompledeTask?.length <= 0 ) {
     return (
       <h1 className="text-3xl text-center my-4 font-extrabold dark:text-white">
         No Task
@@ -77,7 +77,30 @@ const MyTask = () => {
   }
   return (
     <div className="">
-
+<div className="p-5 my-5 border-2 border-black">
+      <h3 className=" text-xl font-bold" >To Do List:</h3>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {toDoTask?.map((Task, i) => (
+        <div className={Task?.priority=="High"?"bg-[#ff3e6576]":Task?.priority=="Low"?"bg-[#4ade8080]":"bg-[#2eadfc6f]"} key={i}>
+          <div
+            className="block max-w-sm p-6 rounded-lg"
+          >
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {Task?.title}
+            </h5>
+            <p className="font-normal text-gray-900 dark:text-gray-400">
+              {Task?.details}
+            </p>
+            <div className="flex gap-3 justify-evenly">
+                <div onClick={()=>handelDelete(Task)}><MdOutlineDelete className="text-4xl font-bold" /></div>
+                <Link to={`/users/update/${Task?._id}`}><MdOutlineUpdate className="text-4xl font-bold" /></Link>
+                <span className="text-xl font-bold" >{Task?.priority}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+      </div>
+      </div>
       <div className="p-5 my-5 border-2 border-black">
       <h3 className=" text-xl font-bold" >On Going List:</h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -102,30 +125,7 @@ const MyTask = () => {
       ))}
       </div>
       </div>
-      <div className="p-5 my-5 border-2 border-black">
-      <h3 className=" text-xl font-bold" >To Do List:</h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {toDoTask?.map((Task, i) => (
-        <div className={Task?.priority=="High"?"bg-[#ff3e6576]":Task?.priority=="Low"?"bg-[#4ade8080]":"bg-[#2eadfc6f]"} key={i}>
-          <div
-            className="block max-w-sm p-6 rounded-lg"
-          >
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {Task?.title}
-            </h5>
-            <p className="font-normal text-gray-900 dark:text-gray-400">
-              {Task?.details}
-            </p>
-            <div className="flex gap-3 justify-evenly">
-                <div onClick={()=>handelDelete(Task)}><MdOutlineDelete className="text-4xl font-bold" /></div>
-                <Link to={`/users/update/${Task?._id}`}><MdOutlineUpdate className="text-4xl font-bold" /></Link>
-                <span className="text-xl font-bold" >{Task?.priority}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-      </div>
-      </div>
+      
       <div className="p-5 my-5 border-2 border-black">
       <h3 className=" text-xl font-bold" >Complede List:</h3>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

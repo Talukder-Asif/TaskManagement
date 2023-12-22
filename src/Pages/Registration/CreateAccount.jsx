@@ -38,7 +38,7 @@ const CreateAccount = () => {
       return createUser(email, password)
         .then((result) => {
           const user = result.user;
-        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
+        axios.post('https://task-server-murex-psi.vercel.app/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
           update(name, photo);
           const userData = {
@@ -46,7 +46,7 @@ const CreateAccount = () => {
             email: email,
             photo: photo,
           }
-          axios.post('http://localhost:5000/user', userData)
+          axios.post('https://task-server-murex-psi.vercel.app/user', userData)
           .then(res=> console.log(res.data));
           Swal.fire({
             icon: "success",
@@ -70,14 +70,14 @@ const CreateAccount = () => {
         .then((result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
           const user = result.user;
-        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
+        axios.post('https://task-server-murex-psi.vercel.app/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
         const userData = {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
         }
-        axios.post('http://localhost:5000/user', userData)
+        axios.post('https://task-server-murex-psi.vercel.app/user', userData)
         .then(res=> console.log(res.data));
           Swal.fire({
             icon: "success",

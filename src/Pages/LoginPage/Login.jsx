@@ -20,7 +20,7 @@ const Login = () => {
         // Signed in 
         const user = userCredential.user;
   
-        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
+        axios.post('https://task-server-murex-psi.vercel.app/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
   
   
@@ -55,7 +55,7 @@ const Login = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        axios.post('http://localhost:5000/jwt', user, {withCredentials:true})
+        axios.post('https://task-server-murex-psi.vercel.app/jwt', user, {withCredentials:true})
         .then(res=> console.log(res.data))
 
         const userData = {
@@ -63,7 +63,7 @@ const Login = () => {
           email: user.email,
           photo: user.photoURL,
         }
-        axios.post('http://localhost:5000/user', userData)
+        axios.post('https://task-server-murex-psi.vercel.app/user', userData)
         .then(res=> console.log(res.data));
 
         Swal.fire({

@@ -33,7 +33,7 @@ const Dashboard = () => {
           };
           axios
             .put(
-              `http://localhost:5000/user/${User?.email}`,
+              `https://task-server-murex-psi.vercel.app/user/${User?.email}`,
               updateData
             )
             .then((res) => console.log(res.data));
