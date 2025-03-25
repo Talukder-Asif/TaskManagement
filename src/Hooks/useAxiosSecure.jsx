@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-    baseURL: 'https://task-server-murex-psi.vercel.app',
-    withCredentials: true,
-})
+  baseURL: "http://localhost:3000",
+  withCredentials: true,
+});
 const useAxiosSecure = () => {
-    return axiosSecure;
+  return axiosSecure;
 };
 
 export default useAxiosSecure;
