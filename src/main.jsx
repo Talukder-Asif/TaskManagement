@@ -15,6 +15,7 @@ import AddTask from "./Pages/UserPages/AddTask/AddTask";
 import MyTask from "./Pages/UserPages/MyTask/MyTask";
 import UpdateTask from "./Pages/UserPages/UpdateTask/UpdateTask";
 import PreviousTask from "./Pages/UserPages/PreviousTask/PreviousTask";
+import SigninRouter from "./Routes/SigninRouter";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Landing></Landing>,
+        element: (
+          <SigninRouter>
+            <Landing></Landing>
+          </SigninRouter>
+        ),
       },
       {
         path: "/signin",
@@ -48,21 +53,21 @@ const router = createBrowserRouter([
             element: <Dashboard></Dashboard>,
           },
           {
-            path:"/users/addTask",
-            element:<AddTask></AddTask>
+            path: "/users/addTask",
+            element: <AddTask></AddTask>,
           },
           {
-            path:"/users/Task",
-            element:<MyTask></MyTask>
+            path: "/users/Task",
+            element: <MyTask></MyTask>,
           },
           {
-            path:"/users/update/:id",
-            element:<UpdateTask></UpdateTask>
+            path: "/users/update/:id",
+            element: <UpdateTask></UpdateTask>,
           },
           {
-            path:"/users/previous",
-            element:<PreviousTask></PreviousTask>
-          }
+            path: "/users/previous",
+            element: <PreviousTask></PreviousTask>,
+          },
         ],
       },
     ],

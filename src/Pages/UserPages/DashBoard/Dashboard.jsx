@@ -1,20 +1,25 @@
 import Swal from "sweetalert2";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import axios from "axios";
 import useUserDetails from "../../../Hooks/useUserDetails";
 import { AuthContext } from "../../../Authantication/AuthProvider/AuthProvider";
 import FromBtn from "../../../Component/FromBtn";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { CLOUD_NAME, Preset } from "../../../cloudinary.config";
+import imageCompression from "browser-image-compression";
 
 const Dashboard = () => {
-  const [User, isUserLoading] = useUserDetails();
+  const [User, isUserLoading, refetch] = useUserDetails();
   const { update } = useContext(AuthContext);
-
-  const handelUpdate = (e) => {
+  const [imageUpload, setImageUpload] = useState(null);
+  const axiosSecure = useAxiosSecure();
+  const handelUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const photo = form.photo.value;
+    const photo = User?.photo;
+
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -23,23 +28,79 @@ const Dashboard = () => {
       confirmButtonColor: "#801f82",
       cancelButtonColor: "#1b1d4d",
       confirmButtonText: "Yes, Update Now!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        update(name, photo);
-        const updateData = {
-          name: name,
-          email: User?.email,
-          photo: photo,
-        };
-        axios
-          .put(`http://localhost:3000/user/${User?.email}`, updateData)
-          .then((res) => console.log(res.data));
-        Swal.fire({
-          icon: "success",
-          title: "Update successfully",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+        if (!imageUpload) {
+          update(name, photo);
+
+          const userData = {
+            name,
+            photo: photo,
+          };
+
+          return await axiosSecure
+            .put(`/user/${User?.email}`, userData)
+            .then((res) => {
+              if (res?.data?.modifiedCount) {
+                form.reset();
+                setImageUpload(null);
+                refetch();
+
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Profile updated successfully",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }
+            });
+        }
+        try {
+          const compressedImage = await imageCompression(imageUpload, {
+            maxSizeMB: 0.3,
+            maxWidthOrHeight: 500,
+            useWebWorker: true,
+          });
+
+          const data = new FormData();
+          data.append("file", compressedImage);
+          data.append("upload_preset", Preset);
+          data.append("cloud_name", CLOUD_NAME);
+
+          const res = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            {
+              method: "POST",
+              body: data,
+            }
+          );
+          const imagefile = await res?.json();
+          const imageURL = imagefile?.secure_url;
+
+          update(name, photo);
+          const updateData = {
+            name: name,
+            email: User?.email,
+            photo: imageURL,
+          };
+          axios
+            .put(`http://localhost:3000/user/${User?.email}`, updateData)
+            .then((res) => console.log(res.data));
+          Swal.fire({
+            icon: "success",
+            title: "Update successfully",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          refetch();
+        } catch (error) {
+          Swal.fire({
+            title: "Error during update",
+            text: error.message,
+            icon: "error",
+          });
+        }
       }
     });
   };
@@ -108,13 +169,11 @@ const Dashboard = () => {
             />
           </div>
           <div className="">
-            <label> New Photo URL</label>
+            <label>Change Profile Photo</label>
             <input
-              type="text"
-              name="photo"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              defaultValue={User.photo}
-              required
+              type="file"
+              onChange={(e) => setImageUpload(e.target.files[0])}
+              className="file-input file-input-bordered w-full block rounded-md border outline-none dark:border-[#002a3f] focus:ring-1 ring-[#002a3f]"
             />
           </div>
         </div>
