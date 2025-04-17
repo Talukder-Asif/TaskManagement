@@ -1,21 +1,37 @@
-import useAxios from "../../../Hooks/useAxios";
 import useTask from "../../../Hooks/useTask";
 import Swal from "sweetalert2";
 import Card from "./card";
 import NoTask from "./NoTask";
 import { useState } from "react";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MyTask = () => {
-  const axiosPublic = useAxios();
+  const axiosSecure = useAxiosSecure();
+
   // const Now = Date.now();
   const [Task, isTaskLoading, refetch] = useTask();
   const [actived, setActive] = useState(null);
   const [showDrop, setShowDrop] = useState(false);
-
+  const [dropArea, setDropArea] = useState(null);
   const toDoTask = Task?.filter((task) => task.list === "To Do");
   const ongoingTask = Task?.filter((task) => task.list === "On going");
   const CompleteTask = Task?.filter((task) => task.list === "Completed");
 
+  const handleUpdateStatus = (id, newStatus) => {
+    const data = { newStatus };
+    axiosSecure.put(`/task-status/${id}`, data).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        setActive(null);
+        setDropArea(null);
+        setShowDrop(false);
+      }
+    });
+  };
+
+  if (actived && dropArea && !showDrop) {
+    handleUpdateStatus(actived, dropArea);
+  }
   const handelDelete = (Task) => {
     Swal.fire({
       title: "Are you sure?",
@@ -27,7 +43,7 @@ const MyTask = () => {
       confirmButtonText: "Yes, Delete Task",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosPublic.delete(`/Task/delete/${Task?._id}`).then((res) => {
+        axiosSecure.delete(`/Task/delete/${Task?._id}`).then((res) => {
           if (res.data.deletedCount > 0) {
             refetch();
             Swal.fire({
@@ -78,10 +94,10 @@ const MyTask = () => {
           task={toDoTask}
           handelDelete={handelDelete}
           setActive={setActive}
-          status="toDoTask"
+          status="To Do"
+          setDropArea={setDropArea}
           actived={actived}
           setShowDrop={setShowDrop}
-          showDrop={showDrop}
         ></Card>
         {!toDoTask.length && <NoTask></NoTask>}
       </div>
@@ -92,9 +108,9 @@ const MyTask = () => {
           task={ongoingTask}
           handelDelete={handelDelete}
           setActive={setActive}
-          status="ongoingTask"
+          status="On going"
+          setDropArea={setDropArea}
           setShowDrop={setShowDrop}
-          showDrop={showDrop}
         ></Card>
         {!ongoingTask.length && <NoTask></NoTask>}
       </div>
@@ -105,14 +121,12 @@ const MyTask = () => {
           task={CompleteTask}
           handelDelete={handelDelete}
           setActive={setActive}
-          status="CompleteTask"
+          status="Completed"
+          setDropArea={setDropArea}
           setShowDrop={setShowDrop}
-          showDrop={showDrop}
         ></Card>
         {!CompleteTask.length && <NoTask></NoTask>}
       </div>
-
-      <h1>Active = {actived}</h1>
     </div>
   );
 };

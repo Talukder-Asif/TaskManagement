@@ -6,8 +6,8 @@ import { MdOutlineUpdate } from "react-icons/md";
 const SingleCard = ({ setActive, Task, handelDelete }) => {
   return (
     <div
-      onDragStart={() => setActive(Task?._id)}
-      onDragEnd={() => setActive(null)}
+      onDragEnd={() => setActive(Task?._id)}
+      onDragStart={() => setActive(null)}
       draggable
       className="bg-[#ff3e6576] border-transparent duration-500 border-2 active:border-black"
     >

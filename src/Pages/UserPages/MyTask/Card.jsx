@@ -1,22 +1,40 @@
 // eslint-disable-next-line react/prop-types
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import SingleCard from "./SingleCard";
 
 const Card = ({
   task,
   handelDelete,
-  setActive,
+  setDropArea,
   status,
+  setActive,
   setShowDrop,
-  showDrop,
 }) => {
+  const [showDropArea, setShowDropArea] = useState(false);
   return (
     <div>
       <div
-        onDragEnter={() => setShowDrop(true)}
-        onDragLeave={() => setShowDrop(false)}
+        onDragEnter={() => {
+          setShowDrop(true);
+          setShowDropArea(true);
+        }}
+        onDragLeave={() => {
+          setShowDrop(false);
+          setShowDropArea(false);
+          setDropArea(null);
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDropArea(status);
+          setShowDrop(false);
+          setShowDropArea(false);
+        }}
         className={
-          showDrop
+          showDropArea
             ? "w-full md:w-1/2 lg:w-1/3  bg-gray-300  items-center   h-20 -mt-10 m-auto text-center pt-6 pr-4  "
             : "opacity-0 w-full md:w-1/2 lg:w-1/3 h-20 -mt-10 m-auto  text-center pt-6 pr-4"
         }
@@ -30,8 +48,6 @@ const Card = ({
             handelDelete={handelDelete}
             setActive={setActive}
             key={i}
-            status={status}
-            showDrop={showDrop}
           ></SingleCard>
         ))}
       </div>
