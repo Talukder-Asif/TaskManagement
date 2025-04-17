@@ -1,24 +1,25 @@
-import { Link } from "react-router-dom";
 import useAxios from "../../../Hooks/useAxios";
 import useTask from "../../../Hooks/useTask";
 import Swal from "sweetalert2";
-import { MdOutlineDelete } from "react-icons/md";
-import { MdOutlineUpdate } from "react-icons/md";
+import Card from "./card";
+import NoTask from "./NoTask";
+import { useState } from "react";
 
 const MyTask = () => {
   const axiosPublic = useAxios();
-  const Now = Date.now();
-  console.log(Now);
+  // const Now = Date.now();
   const [Task, isTaskLoading, refetch] = useTask();
-  const toDoTask=Task?.filter(task => task.list === "To Do" && Now <= Date.parse(task.TaskDeadline));
-  const ongoingTask=Task?.filter(task => task.list === "On going" && Now <= Date.parse(task.TaskDeadline));
-  const CompledeTask=Task?.filter(task => task.list === "Completed" && Now <= Date.parse(task.TaskDeadline));
+  const [actived, setActive] = useState(null);
+  const [showDrop, setShowDrop] = useState(false);
 
+  const toDoTask = Task?.filter((task) => task.list === "To Do");
+  const ongoingTask = Task?.filter((task) => task.list === "On going");
+  const CompleteTask = Task?.filter((task) => task.list === "Completed");
 
   const handelDelete = (Task) => {
     Swal.fire({
       title: "Are you sure?",
-      text: `Do you want to delete ${Task.title}?`,
+      text: `Do you want to delete ${Task?.title}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#801f82",
@@ -31,7 +32,7 @@ const MyTask = () => {
             refetch();
             Swal.fire({
               icon: "success",
-              title: `${Task.name} is deleted!`,
+              title: `${Task?.name} is deleted!`,
               showConfirmButton: false,
               timer: 1500,
             });
@@ -42,7 +43,7 @@ const MyTask = () => {
   };
   if (isTaskLoading) {
     return (
-      <div className="grid min-h-[400px] content-center justify-center">
+      <div className="grid min-h-[400px] w-full content-center justify-center">
         <div className="text-center">
           <div role="status">
             <svg
@@ -68,89 +69,50 @@ const MyTask = () => {
       </div>
     );
   }
-  if (toDoTask?.length <= 0 && ongoingTask?.length <= 0 && CompledeTask?.length <= 0 ) {
-    return (
-      <h1 className="text-3xl text-center my-4 font-extrabold dark:text-white">
-        No Task
-      </h1>
-    );
-  }
+
   return (
     <div className="">
-<div className="p-5 my-5 border-2 border-black">
-      <h3 className=" text-xl font-bold" >To Do List:</h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {toDoTask?.map((Task, i) => (
-        <div className={Task?.priority=="High"?"bg-[#ff3e6576]":Task?.priority=="Low"?"bg-[#4ade8080]":"bg-[#2eadfc6f]"} key={i}>
-          <div
-            className="block max-w-sm p-6 rounded-lg"
-          >
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {Task?.title}
-            </h5>
-            <p className="font-normal text-gray-900 dark:text-gray-400">
-              {Task?.details}
-            </p>
-            <div className="flex gap-3 justify-evenly">
-                <div onClick={()=>handelDelete(Task)}><MdOutlineDelete className="text-4xl font-bold" /></div>
-                <Link to={`/users/update/${Task?._id}`}><MdOutlineUpdate className="text-4xl font-bold" /></Link>
-                <span className="text-xl font-bold" >{Task?.priority}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-      </div>
-      </div>
       <div className="p-5 my-5 border-2 border-black">
-      <h3 className=" text-xl font-bold" >On Going List:</h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {ongoingTask?.map((Task, i) => (
-        <div className={Task?.priority=="High"?"bg-[#ff3e6576]":Task?.priority=="Low"?"bg-[#4ade8080]":"bg-[#2eadfc6f]"} key={i}>
-          <div
-            className="block max-w-sm p-6 rounded-lg"
-          >
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {Task?.title}
-            </h5>
-            <p className="font-normal text-gray-900 dark:text-gray-400">
-              {Task?.details}
-            </p>
-            <div className="flex gap-3 justify-evenly">
-                <div onClick={()=>handelDelete(Task)}><MdOutlineDelete className="text-4xl font-bold" /></div>
-                <Link to={`/users/update/${Task?._id}`}><MdOutlineUpdate className="text-4xl font-bold" /></Link>
-                <span className="text-xl font-bold" >{Task?.priority}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-      </div>
-      </div>
-      
-      <div className="p-5 my-5 border-2 border-black">
-      <h3 className=" text-xl font-bold" >Complede List:</h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {CompledeTask?.map((Task, i) => (
-        <div className={Task?.priority=="High"?"bg-[#ff3e6576]":Task?.priority=="Low"?"bg-[#4ade8080]":"bg-[#2eadfc6f]"} key={i}>
-          <div
-            className="block max-w-sm p-6 rounded-lg"
-          >
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {Task?.title}
-            </h5>
-            <p className="font-normal text-gray-900 dark:text-gray-400">
-              {Task?.details}
-            </p>
-            <div className="flex gap-3 justify-evenly">
-                <div onClick={()=>handelDelete(Task)}><MdOutlineDelete className="text-4xl font-bold" /></div>
-                <Link to={`/users/update/${Task?._id}`}><MdOutlineUpdate className="text-4xl font-bold" /></Link>
-                <span className="text-xl font-bold" >{Task?.priority}</span>
-            </div>
-          </div>
-        </div>
-      ))}
-      </div>
+        <h3 className=" text-xl font-bold">To Do List:</h3>
+        <Card
+          task={toDoTask}
+          handelDelete={handelDelete}
+          setActive={setActive}
+          status="toDoTask"
+          actived={actived}
+          setShowDrop={setShowDrop}
+          showDrop={showDrop}
+        ></Card>
+        {!toDoTask.length && <NoTask></NoTask>}
       </div>
 
+      <div className="p-5 my-5 border-2 border-black">
+        <h3 className=" text-xl font-bold">On Going List:</h3>
+        <Card
+          task={ongoingTask}
+          handelDelete={handelDelete}
+          setActive={setActive}
+          status="ongoingTask"
+          setShowDrop={setShowDrop}
+          showDrop={showDrop}
+        ></Card>
+        {!ongoingTask.length && <NoTask></NoTask>}
+      </div>
+
+      <div className="p-5 my-5 border-2 border-black">
+        <h3 className=" text-xl font-bold">Complete List:</h3>
+        <Card
+          task={CompleteTask}
+          handelDelete={handelDelete}
+          setActive={setActive}
+          status="CompleteTask"
+          setShowDrop={setShowDrop}
+          showDrop={showDrop}
+        ></Card>
+        {!CompleteTask.length && <NoTask></NoTask>}
+      </div>
+
+      <h1>Active = {actived}</h1>
     </div>
   );
 };
